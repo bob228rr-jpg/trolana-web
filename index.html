@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="$TROLANA — Solana native cope. Not financial advice." />
+  <title>TROLANA — Solana native cope</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #060608;
+      --bg-elev: #0e0e12;
+      --text: #e8e6e3;
+      --muted: #8a8680;
+      --line: rgba(255, 255, 255, 0.08);
+      --accent-a: #8b5cf6;
+      --accent-b: #22d3a3;
+      --glow: rgba(139, 92, 246, 0.35);
+      --radius: clamp(12px, 2vw, 20px);
+      --font-display: "Syne", system-ui, sans-serif;
+      --font-body: "Instrument Sans", system-ui, sans-serif;
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 0.95rem + 0.35vw, 1.125rem);
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--bg-deep);
+      overflow-x: hidden;
+    }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      z-index: 50;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    .orb {
+      position: fixed;
+      width: min(72vw, 640px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, var(--glow), transparent 55%);
+      filter: blur(80px);
+      opacity: 0.45;
+      top: -18%;
+      right: -8%;
+      z-index: 0;
+      animation: drift 22s var(--ease-out) infinite alternate;
+    }
+
+    .orb--b {
+      left: -12%;
+      bottom: -20%;
+      top: auto;
+      right: auto;
+      background: radial-gradient(circle at 60% 50%, rgba(34, 211, 163, 0.22), transparent 60%);
+      animation-duration: 28s;
+    }
+
+    @keyframes drift {
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+      to {
+        transform: translate(-4%, 6%) scale(1.08);
+      }
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: min(1100px, 92vw);
+      margin-inline: auto;
+      padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(4rem, 12vw, 7rem);
+    }
+
+    header.hero {
+      display: grid;
+      gap: clamp(1.5rem, 4vw, 2.75rem);
+      align-items: center;
+      grid-template-columns: 1fr;
+      padding-bottom: clamp(3rem, 8vw, 5rem);
+      border-bottom: 1px solid var(--line);
+    }
+
+    @media (min-width: 860px) {
+      header.hero {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      }
+    }
+
+    .hero__visual {
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero__logo {
+      width: min(100%, 340px);
+      max-width: 88vw;
+      height: auto;
+      filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.2));
+      animation: float 5.5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.75rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-b), transparent);
+      opacity: 0.9;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.35rem, 5vw, 3.75rem);
+      line-height: 1.05;
+      margin: 0 0 0.5rem;
+      letter-spacing: -0.03em;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(120deg, #fff 0%, #c4b5fd 45%, #5eead4 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero__tag {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--muted);
+      margin: 0 0 1.25rem;
+      max-width: 36ch;
+    }
+
+    .hero__cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.72rem 1.2rem;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      transition: transform 0.2s var(--ease-out), border-color 0.2s, background 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(139, 92, 246, 0.45);
+      background: rgba(139, 92, 246, 0.12);
+    }
+
+    .btn--primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent-a), #6366f1 40%, var(--accent-b));
+      color: #070709;
+      box-shadow: 0 12px 40px rgba(99, 102, 241, 0.25);
+    }
+
+    .btn--primary:hover {
+      border-color: transparent;
+      background: linear-gradient(135deg, #a78bfa, #818cf8 40%, #34d399);
+    }
+
+    section {
+      margin-top: clamp(3rem, 8vw, 5rem);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+      margin: 0 0 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .manifesto {
+      padding: clamp(1.5rem, 4vw, 2.25rem);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--line);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .manifesto p {
+      margin: 0 0 1.25rem;
+      color: #d4d0c8;
+    }
+
+    .manifesto p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .manifesto em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .tick {
+      display: block;
+      margin-top: 1.5rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.05rem, 2vw, 1.2rem);
+      letter-spacing: 0.02em;
+      color: #fff;
+    }
+
+    .tick small {
+      display: block;
+      margin-top: 0.35rem;
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 0.95rem;
+      letter-spacing: 0;
+      color: var(--muted);
+    }
+
+    .links {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .link-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 1.1rem 1.15rem;
+      border-radius: calc(var(--radius) - 4px);
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, transform 0.2s var(--ease-out);
+    }
+
+    .link-card:hover {
+      border-color: rgba(34, 211, 163, 0.35);
+      transform: translateY(-3px);
+    }
+
+    .link-card span:first-child {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .link-card span:last-child {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    footer {
+      margin-top: clamp(3.5rem, 10vw, 6rem);
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="orb" aria-hidden="true"></div>
+  <div class="orb orb--b" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero__visual reveal">
+        <img class="hero__logo" src="./assets/trolana-logo.png" alt="$TROLANA logo: Trollface in Solana bars" width="340" height="340" />
+      </div>
+      <div>
+        <p class="eyebrow reveal">Solana · community meme layer</p>
+        <h1 class="reveal"><span>$TROLANA</span></h1>
+        <p class="hero__tag reveal">Solana native cope. I clown this ecosystem because I live in it.</p>
+        <div class="hero__cta reveal">
+          <a class="btn btn--primary" href="https://twitter.com/intent/tweet?text=%24TROLANA%20energy.%20stay%20native." rel="noopener noreferrer" target="_blank">Share the line</a>
+          <a class="btn" href="#links">Links</a>
+        </div>
+      </div>
+    </header>
+
+    <section aria-labelledby="manifesto-heading">
+      <h2 id="manifesto-heading" class="section-title reveal">Manifesto</h2>
+      <div class="manifesto reveal">
+        <p>I don’t pitch Solana to people who never touched it. I talk shit to the people who are already here.</p>
+        <p>I laugh at your bags because I’m holding something stupid too. We all run <em>alpha</em> until the chart decides we don’t. Then we start typing <em>community</em> and <em>long term</em> like we planned it.</p>
+        <p><strong>$TROLANA energy.</strong> stay native. I clown this ecosystem because I live in it. If you’re not on SOL, scroll past.</p>
+        <span class="tick">$TROLANA <small>not financial advice · community art</small></span>
+      </div>
+    </section>
+
+    <section id="links" aria-labelledby="links-heading">
+      <h2 id="links-heading" class="section-title reveal">Where to find the cope</h2>
+      <div class="links">
+        <a class="link-card reveal" href="#">
+          <span>X / Twitter</span>
+          <span>Replace with your profile URL</span>
+        </a>
+        <a class="link-card reveal" href="#">
+          <span>Telegram</span>
+          <span>Replace with comm link</span>
+        </a>
+        <a class="link-card reveal" href="#">
+          <span>Dexscreener</span>
+          <span>Replace when live</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="reveal">
+      <p>$TROLANA is a community meme. Nothing on this page is investment advice. You are responsible for what you click and what you buy. The logo is fan art, not an official Solana Foundation product.</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var nodes = document.querySelectorAll(".reveal");
+      if (!("IntersectionObserver" in window)) {
+        nodes.forEach(function (el) {
+          el.classList.add("is-visible");
+        });
+        return;
+      }
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add("is-visible");
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { root: null, threshold: 0.12, rootMargin: "0px 0px -5% 0px" }
+      );
+      nodes.forEach(function (el) {
+        io.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
